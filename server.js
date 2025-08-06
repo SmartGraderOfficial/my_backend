@@ -1,8 +1,12 @@
 import express from 'express';
 import { app } from './app.js';
 import { connectDb } from './config/db.js';
+// Load env variables ONLY in development (not in Railway)
 import dotenv from 'dotenv';
-dotenv.config();
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config();
+}
+
 const PORT = process.env.PORT || 5000;
 
 // Graceful shutdown handler
