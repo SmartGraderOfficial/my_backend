@@ -1,0 +1,1062 @@
+{
+	"info": {
+		"_postman_id": "quiz-extension-api-v1",
+		"name": "Quiz Extension API",
+		"description": "Complete API collection for Quiz Extension Backend with MongoDB integration and AccessKey authentication",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "quiz-extension"
+	},
+	"item": [
+		{
+			"name": "Health Check",
+			"item": [
+				{
+					"name": "Server Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"health"
+							]
+						},
+						"description": "Check if the server is running and healthy"
+					},
+					"response": []
+				},
+				{
+					"name": "Quiz Service Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/quiz/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"quiz",
+								"health"
+							]
+						},
+						"description": "Check quiz service health and database connectivity"
+					},
+					"response": []
+				}
+			],
+			"description": "Health check endpoints to verify server status"
+		},
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"NameOfStu\": \"John Doe\",\n    \"StuID\": \"STU001\",\n    \"AccessKey\": \"MySecureKey123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						},
+						"description": "Register a new user with unique Student ID and Access Key"
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Access Key (Login)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Extract user data from response for use in other requests",
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    if (response.success && response.data) {",
+									"        pm.environment.set('user_id', response.data.id);",
+									"        pm.environment.set('user_name', response.data.NameOfStu);",
+									"        pm.environment.set('stu_id', response.data.StuID);",
+									"        console.log('User authenticated successfully:', response.data.NameOfStu);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"AccessKey\": \"{{access_key}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/verify",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"verify"
+							]
+						},
+						"description": "Verify access key for authentication (similar to login)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "AccessKey {{access_key}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/auth/profile",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"profile"
+							]
+						},
+						"description": "Get authenticated user's profile information"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "AccessKey {{access_key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"NameOfStu\": \"John Doe Updated\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/profile",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"profile"
+							]
+						},
+						"description": "Update user profile information"
+					},
+					"response": []
+				},
+				{
+					"name": "Deactivate Account",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "AccessKey {{access_key}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/auth/deactivate",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"deactivate"
+							]
+						},
+						"description": "Deactivate user account"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Statistics",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "AccessKey {{access_key}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/auth/stats",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"stats"
+							]
+						},
+						"description": "Get user statistics (admin functionality)"
+					},
+					"response": []
+				}
+			],
+			"description": "User authentication and profile management endpoints"
+		},
+		{
+			"name": "Quiz Operations",
+			"item": [
+				{
+					"name": "Get Answer by Question",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate response structure",
+									"pm.test('Response has correct structure', function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property('success');",
+									"    if (response.success) {",
+									"        pm.expect(response).to.have.property('data');",
+									"        pm.expect(response.data).to.have.property('correctAnswer');",
+									"        pm.expect(response.data).to.have.property('questionId');",
+									"    }",
+									"});",
+									"",
+									"// Log answer for debugging",
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    if (response.success && response.data) {",
+									"        console.log('Correct Answer:', response.data.correctAnswer);",
+									"        console.log('Question ID:', response.data.questionId);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "AccessKey {{access_key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"description\": \"Geography question about European capitals\",\n    \"question\": \"What is the capital of France?\",\n    \"options\": {\n        \"A\": \"London\",\n        \"B\": \"Berlin\",\n        \"C\": \"Paris\",\n        \"D\": \"Madrid\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/quiz/get-answer",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"quiz",
+								"get-answer"
+							]
+						},
+						"description": "Get the correct answer for a specific question with its options. This is the main endpoint used by the quiz extension."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Answer by Question (With Images)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate response structure for image-enhanced questions",
+									"pm.test('Response has correct structure', function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property('success');",
+									"    if (response.success) {",
+									"        pm.expect(response).to.have.property('data');",
+									"        pm.expect(response.data).to.have.property('correctAnswer');",
+									"        pm.expect(response.data).to.have.property('questionId');",
+									"    }",
+									"});",
+									"",
+									"// Log answer and image info for debugging",
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    if (response.success && response.data) {",
+									"        console.log('Question Text:', response.data.question);",
+									"        console.log('Question Image:', response.data.questionImage);",
+									"        console.log('Correct Answer:', response.data.correctAnswer);",
+									"        console.log('Correct Answer Image:', response.data.correctAnswerImage);",
+									"        console.log('Question ID:', response.data.questionId);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "AccessKey {{access_key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"question\": \"What does this diagram represent?\",\n    \"questionImage\": \"https://example.com/math-diagram.png\",\n    \"options\": {\n        \"A\": \"Linear equation\",\n        \"AImage\": \"https://example.com/option-a.png\",\n        \"B\": \"Quadratic function\",\n        \"BImage\": \"https://example.com/option-b.png\",\n        \"C\": \"Exponential growth\",\n        \"CImage\": \"https://example.com/option-c.png\",\n        \"D\": \"Logarithmic function\",\n        \"DImage\": \"https://example.com/option-d.png\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/quiz/get-answer",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"quiz",
+								"get-answer"
+							]
+						},
+						"description": "Get the correct answer for a question that includes images. This example shows how to handle questions with both text and images for the question and all options."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Answer by Image-Only Question",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate response for image-only questions",
+									"pm.test('Response has correct structure', function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property('success');",
+									"    if (response.success) {",
+									"        pm.expect(response).to.have.property('data');",
+									"        pm.expect(response.data).to.have.property('questionId');",
+									"    }",
+									"});",
+									"",
+									"// Log image-based response",
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    if (response.success && response.data) {",
+									"        console.log('Question Image:', response.data.questionImage);",
+									"        console.log('Answer Found:', response.data.correctAnswer || 'Image Answer');",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "AccessKey {{access_key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"questionImage\": \"https://example.com/geometry-problem.png\",\n    \"options\": {\n        \"AImage\": \"https://example.com/answer-a.png\",\n        \"BImage\": \"https://example.com/answer-b.png\",\n        \"CImage\": \"https://example.com/answer-c.png\",\n        \"DImage\": \"https://example.com/answer-d.png\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/quiz/get-answer",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"quiz",
+								"get-answer"
+							]
+						},
+						"description": "Example of a completely image-based question where both the question and all options are images without any text content."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Answer by Mixed Content (Text + Images Together)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate response for mixed content questions (BOTH text and images)",
+									"pm.test('Response has correct structure for mixed content', function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property('success');",
+									"    if (response.success) {",
+									"        pm.expect(response).to.have.property('data');",
+									"        pm.expect(response.data).to.have.property('questionId');",
+									"        // Should have both text and image data in response",
+									"        console.log('Mixed content search - both text and images handled');",
+									"    }",
+									"});",
+									"",
+									"// Log comprehensive mixed content response",
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    if (response.success && response.data) {",
+									"        console.log('=== MIXED CONTENT RESPONSE ===');",
+									"        console.log('Question Text:', response.data.question);",
+									"        console.log('Question Image:', response.data.questionImage);",
+									"        console.log('Correct Answer Text:', response.data.correctAnswer);",
+									"        console.log('Correct Answer Image:', response.data.correctAnswerImage);",
+									"        console.log('Match Score:', response.data.matchScore);",
+									"        console.log('This tests the FIXED behavior for mixed content!');",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "AccessKey {{access_key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"question\": \"What does this molecular structure represent?\",\n    \"questionImage\": \"https://example.com/molecule-structure.png\",\n    \"options\": {\n        \"A\": \"Glucose\",\n        \"AImage\": \"https://example.com/glucose-structure.png\",\n        \"B\": \"Fructose\",\n        \"BImage\": \"https://example.com/fructose-structure.png\",\n        \"C\": \"Sucrose\",\n        \"CImage\": \"https://example.com/sucrose-structure.png\",\n        \"D\": \"Lactose\",\n        \"DImage\": \"https://example.com/lactose-structure.png\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/quiz/get-answer",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"quiz",
+								"get-answer"
+							]
+						},
+						"description": "🔧 CRITICAL TEST: This tests the FIXED behavior where both text and images are provided together. The system now properly matches ALL provided fields (text AND images) instead of just text OR images. This was the main issue that has been resolved!"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Answer by Description-Based Search",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate description-based search functionality",
+									"pm.test('Response has correct structure for description search', function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property('success');",
+									"    if (response.success) {",
+									"        pm.expect(response).to.have.property('data');",
+									"        pm.expect(response.data).to.have.property('description');",
+									"        console.log('✅ Description-based search working!');",
+									"    } else {",
+									"        console.log('Description logged for future database improvement');",
+									"    }",
+									"});",
+									"",
+									"// Log description search response",
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    if (response.success && response.data) {",
+									"        console.log('Found via Description:', response.data.description);",
+									"        console.log('Question:', response.data.question);",
+									"        console.log('Correct Answer:', response.data.correctAnswer);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "AccessKey {{access_key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"description\": \"Chemistry question about molecular formulas and chemical compounds\",\n    \"question\": \"What is the molecular formula for water?\",\n    \"options\": {\n        \"A\": \"H2O\",\n        \"B\": \"CO2\",\n        \"C\": \"O2\",\n        \"D\": \"CH4\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/quiz/get-answer",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"quiz",
+								"get-answer"
+							]
+						},
+						"description": "🆕 NEW FEATURE: Tests description-based search functionality. The description field is now included in search logic and saved in unanswered questions logging for database improvement."
+					},
+					"response": []
+				},
+				{
+					"name": "Search Questions",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "AccessKey {{access_key}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/quiz/search?query=capital&limit=10&page=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"quiz",
+								"search"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "capital",
+									"description": "Search term to find questions"
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "Number of results per page"
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number for pagination"
+								}
+							]
+						},
+						"description": "Search for questions containing specific keywords (for debugging/admin use)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Question Statistics",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "AccessKey {{access_key}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/quiz/stats",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"quiz",
+								"stats"
+							]
+						},
+						"description": "Get statistics about questions in the database"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Unanswered Questions Stats",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "AccessKey {{access_key}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/quiz/unanswered/stats",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"quiz",
+								"unanswered",
+								"stats"
+							]
+						},
+						"description": "Get statistics about unanswered questions logged to JSON file"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Unanswered Questions",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "AccessKey {{access_key}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/quiz/unanswered?limit=20&page=1&sortBy=searchCount",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"quiz",
+								"unanswered"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "20",
+									"description": "Number of results per page (max 100)"
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number"
+								},
+								{
+									"key": "sortBy",
+									"value": "searchCount",
+									"description": "Sort by: searchCount, timestamp, or lastSearched"
+								}
+							]
+						},
+						"description": "Get all unanswered questions with pagination and sorting"
+					},
+					"response": []
+				},
+				{
+					"name": "Clear All Unanswered Questions",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "AccessKey {{access_key}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/quiz/unanswered/clear",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"quiz",
+								"unanswered",
+								"clear"
+							]
+						},
+						"description": "Clear all unanswered questions from the JSON file (admin only)"
+					},
+					"response": []
+				}
+			],
+			"description": "Main quiz functionality endpoints"
+		},
+		{
+			"name": "Test Cases",
+			"item": [
+				{
+					"name": "Complete User Flow Test",
+					"item": [
+						{
+							"name": "1. Register Test User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('User registration successful', function () {",
+											"    pm.response.to.have.status(201);",
+											"    const response = pm.response.json();",
+											"    pm.expect(response.success).to.be.true;",
+											"    pm.expect(response.data).to.have.property('id');",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"NameOfStu\": \"Test User {{$randomInt}}\",\n    \"StuID\": \"TEST{{$randomInt}}\",\n    \"AccessKey\": \"TestKey{{$randomInt}}\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/auth/register",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "2. Verify Access Key",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Access key verification successful', function () {",
+											"    pm.response.to.have.status(200);",
+											"    const response = pm.response.json();",
+											"    pm.expect(response.success).to.be.true;",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"AccessKey\": \"{{access_key}}\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/auth/verify",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"verify"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3. Get Answer Test",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Answer retrieval successful', function () {",
+											"    pm.response.to.have.status(200);",
+											"    const response = pm.response.json();",
+											"    pm.expect(response.success).to.be.true;",
+											"    pm.expect(response.data).to.have.property('correctAnswer');",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "AccessKey {{access_key}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"question\": \"Sample test question\",\n    \"options\": {\n        \"A\": \"Option A\",\n        \"B\": \"Option B\",\n        \"C\": \"Option C\",\n        \"D\": \"Option D\"\n    }\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/quiz/get-answer",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"quiz",
+										"get-answer"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "Complete flow testing for user registration and quiz functionality"
+				},
+				{
+					"name": "Error Handling Tests",
+					"item": [
+						{
+							"name": "Invalid Access Key",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Invalid access key returns 401', function () {",
+											"    pm.response.to.have.status(401);",
+											"    const response = pm.response.json();",
+											"    pm.expect(response.success).to.be.false;",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"AccessKey\": \"InvalidKey123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/auth/verify",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"verify"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Missing Authentication Header",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Missing auth returns 401', function () {",
+											"    pm.response.to.have.status(401);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/auth/profile",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid Request Body",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Invalid request returns 400', function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "AccessKey {{access_key}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"question\": \"\",\n    \"options\": {}\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/quiz/get-answer",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"quiz",
+										"get-answer"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "Test error handling scenarios"
+				}
+			],
+			"description": "Comprehensive test cases for API validation"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Set default values if not already set",
+					"if (!pm.environment.get('base_url')) {",
+					"    pm.environment.set('base_url', 'http://localhost:5000');",
+					"}",
+					"",
+					"if (!pm.environment.get('access_key')) {",
+					"    pm.environment.set('access_key', 'MySecureKey123');",
+					"}",
+					"",
+					"// Log request details for debugging",
+					"console.log('Request URL:', pm.request.url.toString());",
+					"console.log('Request Method:', pm.request.method);"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Global response validation",
+					"pm.test('Response time is acceptable', function () {",
+					"    pm.expect(pm.response.responseTime).to.be.below(5000);",
+					"});",
+					"",
+					"pm.test('Response has correct content-type', function () {",
+					"    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+					"});",
+					"",
+					"// Log response for debugging",
+					"console.log('Response Status:', pm.response.status);",
+					"console.log('Response Time:', pm.response.responseTime + 'ms');"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5000",
+			"type": "string"
+		},
+		{
+			"key": "access_key",
+			"value": "MySecureKey123",
+			"type": "string"
+		}
+	]
+}

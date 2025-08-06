@@ -1,0 +1,141 @@
+{
+  "testScenarios": {
+    "scenario1_text_only": {
+      "description": "Traditional text-only question (backward compatibility)",
+      "request": {
+        "question": "What is the capital of France?",
+        "options": {
+          "A": "London",
+          "B": "Berlin",
+          "C": "Paris",
+          "D": "Madrid"
+        }
+      },
+      "expectedBehavior": "Searches using text fields only",
+      "searchQuery": {
+        "question": "What is the capital of France?",
+        "OptionA": "London",
+        "OptionB": "Berlin", 
+        "OptionC": "Paris",
+        "OptionD": "Madrid"
+      }
+    },
+    
+    "scenario2_image_only": {
+      "description": "Image-only question with no text content",
+      "request": {
+        "questionImage": "https://example.com/geometry-problem.png",
+        "options": {
+          "AImage": "https://example.com/answer-a.png",
+          "BImage": "https://example.com/answer-b.png",
+          "CImage": "https://example.com/answer-c.png",
+          "DImage": "https://example.com/answer-d.png"
+        }
+      },
+      "expectedBehavior": "Searches using image URLs only",
+      "searchQuery": {
+        "questionImage": "https://example.com/geometry-problem.png",
+        "OptionAImage": "https://example.com/answer-a.png",
+        "OptionBImage": "https://example.com/answer-b.png",
+        "OptionCImage": "https://example.com/answer-c.png",
+        "OptionDImage": "https://example.com/answer-d.png"
+      }
+    },
+    
+    "scenario3_mixed_content_both_provided": {
+      "description": "BOTH text and images provided together - comprehensive matching",
+      "request": {
+        "question": "What does this diagram represent?",
+        "questionImage": "https://example.com/math-diagram.png",
+        "options": {
+          "A": "Linear equation",
+          "AImage": "https://example.com/option-a.png",
+          "B": "Quadratic function",
+          "BImage": "https://example.com/option-b.png",
+          "C": "Exponential growth", 
+          "CImage": "https://example.com/option-c.png",
+          "D": "Logarithmic function",
+          "DImage": "https://example.com/option-d.png"
+        }
+      },
+      "expectedBehavior": "Searches using BOTH text AND image fields for exact match",
+      "searchQuery": {
+        "question": "What does this diagram represent?",
+        "questionImage": "https://example.com/math-diagram.png", 
+        "OptionA": "Linear equation",
+        "OptionAImage": "https://example.com/option-a.png",
+        "OptionB": "Quadratic function",
+        "OptionBImage": "https://example.com/option-b.png",
+        "OptionC": "Exponential growth",
+        "OptionCImage": "https://example.com/option-c.png",
+        "OptionD": "Logarithmic function", 
+        "OptionDImage": "https://example.com/option-d.png"
+      },
+      "note": "This is the critical scenario that was previously broken - now fixed!"
+    },
+    
+    "scenario4_partial_mixed_content": {
+      "description": "Some options have text, others have images",
+      "request": {
+        "question": "Which chemical structure is correct?",
+        "questionImage": "https://example.com/chemical-question.png",
+        "options": {
+          "A": "Benzene ring",
+          "BImage": "https://example.com/structure-b.png",
+          "C": "Cyclohexane",
+          "DImage": "https://example.com/structure-d.png"
+        }
+      },
+      "expectedBehavior": "Matches text for A&C, images for B&D",
+      "searchQuery": {
+        "question": "Which chemical structure is correct?",
+        "questionImage": "https://example.com/chemical-question.png",
+        "OptionA": "Benzene ring",
+        "OptionBImage": "https://example.com/structure-b.png", 
+        "OptionC": "Cyclohexane",
+        "OptionDImage": "https://example.com/structure-d.png"
+      }
+    },
+    
+    "scenario5_question_text_only_options_mixed": {
+      "description": "Question has only text, options are mixed text/image",
+      "request": {
+        "question": "What is the correct molecular formula?",
+        "options": {
+          "A": "H2O",
+          "BImage": "https://example.com/formula-b.png",
+          "C": "CO2", 
+          "DImage": "https://example.com/formula-d.png"
+        }
+      },
+      "expectedBehavior": "Question text only, mixed options",
+      "searchQuery": {
+        "question": "What is the correct molecular formula?",
+        "OptionA": "H2O",
+        "OptionBImage": "https://example.com/formula-b.png",
+        "OptionC": "CO2",
+        "OptionDImage": "https://example.com/formula-d.png"
+      }
+    }
+  },
+  
+  "keyImprovements": [
+    "✅ FIXED: Now handles both text AND images together in same question/option",
+    "✅ IMPROVED: Comprehensive exact matching across all provided fields", 
+    "✅ ENHANCED: Flexible search with multiple fallback strategies",
+    "✅ ROBUST: Handles partial content scenarios gracefully",
+    "✅ BACKWARD COMPATIBLE: All existing functionality preserved"
+  ],
+  
+  "previousIssue": {
+    "problem": "When both text and image were provided, system would only use text OR image, not both",
+    "example": "Question='What is this?' + QuestionImage='diagram.png' would only search by text, ignoring image",
+    "consequence": "Failed to find questions that had both text and image content together"
+  },
+  
+  "fixedBehavior": {
+    "improvement": "Now uses ALL provided fields for matching",
+    "example": "Question='What is this?' + QuestionImage='diagram.png' searches for BOTH text AND image",
+    "benefit": "Exact matching works for any combination of text/image content"
+  }
+}

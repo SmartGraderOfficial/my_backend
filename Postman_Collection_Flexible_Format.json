@@ -1,0 +1,377 @@
+{
+  "info": {
+    "name": "Question API - Flexible Format",
+    "description": "API collection for the new flexible question format with extensive nullable field support",
+    "version": "2.0.0"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Question Management - New Flexible Format",
+      "item": [
+        {
+          "name": "Create Question - Standard MCQ (All Fields)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pattern\": \"STANDARD_MCQ\",\n  \"passageId\": null,\n  \"section\": \"Quant\",\n  \"questionNumber\": 1,\n  \"directions\": \"Solve the following question and mark the best possible option.\",\n  \"passage\": null,\n  \"questionText\": \"If a shopkeeper calculates his profit to be 20% his selling price, find his actual profit % ?\",\n  \"statements\": null,\n  \"conclusions\": null,\n  \"options\": [\n    {\n      \"text\": \"20%\",\n      \"images\": null\n    },\n    {\n      \"text\": \"25%\",\n      \"images\": null\n    },\n    {\n      \"text\": \"16.67%\",\n      \"images\": null\n    },\n    {\n      \"text\": \"30%\",\n      \"images\": null\n    }\n  ],\n  \"CorrectAns\": [\n    {\n      \"text\": \"25%\",\n      \"images\": null\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/questions/create",
+              "host": ["{{base_url}}"],
+              "path": ["questions", "create"]
+            }
+          }
+        },
+        {
+          "name": "Create Question - Passage Based",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pattern\": \"PASSAGE_BASED\",\n  \"passageId\": \"passage_001\",\n  \"section\": \"Verbal\",\n  \"questionNumber\": 5,\n  \"directions\": \"Read the following passage and answer the question\",\n  \"passage\": \"Climate change is one of the most pressing issues of our time. Scientists around the world have been studying its effects on various ecosystems. The data shows that rising temperatures are causing significant changes in biodiversity patterns.\",\n  \"questionText\": \"What is the main topic discussed in the passage?\",\n  \"statements\": null,\n  \"conclusions\": null,\n  \"options\": [\n    {\n      \"text\": \"Weather patterns\",\n      \"images\": null\n    },\n    {\n      \"text\": \"Climate change effects\",\n      \"images\": null\n    },\n    {\n      \"text\": \"Ecosystem diversity\",\n      \"images\": null\n    },\n    {\n      \"text\": \"Scientific methods\",\n      \"images\": null\n    }\n  ],\n  \"CorrectAns\": [\n    {\n      \"text\": \"Climate change effects\",\n      \"images\": null\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/questions/create",
+              "host": ["{{base_url}}"],
+              "path": ["questions", "create"]
+            }
+          }
+        },
+        {
+          "name": "Create Question - Minimal Data (Nullable Fields)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pattern\": \"STANDARD_MCQ\",\n  \"passageId\": null,\n  \"section\": null,\n  \"questionNumber\": null,\n  \"directions\": \"Basic directions only\",\n  \"passage\": null,\n  \"questionText\": null,\n  \"statements\": null,\n  \"conclusions\": null,\n  \"options\": [],\n  \"CorrectAns\": null\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/questions/create",
+              "host": ["{{base_url}}"],
+              "path": ["questions", "create"]
+            }
+          }
+        },
+        {
+          "name": "Create Question - Without Correct Answers",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pattern\": \"STANDARD_MCQ\",\n  \"section\": \"Math\",\n  \"directions\": \"Solve the problem\",\n  \"questionText\": \"What is 2 + 2?\",\n  \"options\": [\n    {\n      \"text\": \"3\",\n      \"images\": null\n    },\n    {\n      \"text\": \"4\",\n      \"images\": null\n    },\n    {\n      \"text\": \"5\",\n      \"images\": null\n    }\n  ],\n  \"CorrectAns\": []\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/questions/create",
+              "host": ["{{base_url}}"],
+              "path": ["questions", "create"]
+            }
+          }
+        },
+        {
+          "name": "Update Question Answer",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"CorrectAns\": [\n    {\n      \"text\": \"4\",\n      \"images\": null\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/questions/{{question_id}}/answer",
+              "host": ["{{base_url}}"],
+              "path": ["questions", "{{question_id}}", "answer"]
+            }
+          }
+        },
+        {
+          "name": "Create Question - With Statements and Conclusions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pattern\": \"LOGICAL_REASONING\",\n  \"passageId\": null,\n  \"section\": \"Reasoning\",\n  \"questionNumber\": 10,\n  \"directions\": \"Read the statements and determine which conclusion follows logically.\",\n  \"passage\": null,\n  \"questionText\": \"Based on the given statements, which conclusion is valid?\",\n  \"statements\": \"Statement 1: All birds can fly. Statement 2: Penguin is a bird.\",\n  \"conclusions\": \"Conclusion 1: Penguin can fly. Conclusion 2: Penguin cannot fly.\",\n  \"options\": [\n    {\n      \"text\": \"Only conclusion 1 follows\",\n      \"images\": null\n    },\n    {\n      \"text\": \"Only conclusion 2 follows\",\n      \"images\": null\n    },\n    {\n      \"text\": \"Both conclusions follow\",\n      \"images\": null\n    },\n    {\n      \"text\": \"Neither conclusion follows\",\n      \"images\": null\n    }\n  ],\n  \"CorrectAns\": [\n    {\n      \"text\": \"Neither conclusion follows\",\n      \"images\": null\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/questions/create",
+              "host": ["{{base_url}}"],
+              "path": ["questions", "create"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Question Search - Flexible Format Support",
+      "item": [
+        {
+          "name": "Search by New Format",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"directions\": \"Solve the following question and mark the best possible option.\",\n  \"questionText\": \"If a shopkeeper calculates his profit to be 20% his selling price, find his actual profit % ?\",\n  \"options\": [\n    {\n      \"text\": \"20%\",\n      \"images\": null\n    },\n    {\n      \"text\": \"25%\",\n      \"images\": null\n    },\n    {\n      \"text\": \"16.67%\",\n      \"images\": null\n    },\n    {\n      \"text\": \"30%\",\n      \"images\": null\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/questions/search",
+              "host": ["{{base_url}}"],
+              "path": ["questions", "search"]
+            }
+          }
+        },
+        {
+          "name": "Search by Legacy Format (Backward Compatibility)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"directions\": \"Choose the correct answer\",\n  \"question\": \"What is the capital of France?\",\n  \"questionImage\": \"\",\n  \"options\": {\n    \"A\": \"London\",\n    \"B\": \"Paris\",\n    \"C\": \"Berlin\",\n    \"D\": \"Madrid\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/questions/search",
+              "host": ["{{base_url}}"],
+              "path": ["questions", "search"]
+            }
+          }
+        },
+        {
+          "name": "Search by Passage",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"passage\": \"Climate change is one of the most pressing issues of our time. Scientists around the world have been studying its effects on various ecosystems.\",\n  \"questionText\": \"What is the main topic discussed in the passage?\",\n  \"options\": [\n    {\n      \"text\": \"Weather patterns\",\n      \"images\": null\n    },\n    {\n      \"text\": \"Climate change effects\",\n      \"images\": null\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/questions/search",
+              "host": ["{{base_url}}"],
+              "path": ["questions", "search"]
+            }
+          }
+        },
+        {
+          "name": "Search with Minimal Data",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"directions\": \"Basic directions only\",\n  \"options\": []\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/questions/search",
+              "host": ["{{base_url}}"],
+              "path": ["questions", "search"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Test Cases - Edge Cases and Validation",
+      "item": [
+        {
+          "name": "Test - All Null Fields",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pattern\": null,\n  \"passageId\": null,\n  \"section\": null,\n  \"questionNumber\": null,\n  \"directions\": null,\n  \"passage\": null,\n  \"questionText\": null,\n  \"statements\": null,\n  \"conclusions\": null,\n  \"options\": null,\n  \"CorrectAns\": null\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/questions/create",
+              "host": ["{{base_url}}"],
+              "path": ["questions", "create"]
+            },
+            "description": "This should fail validation as it has no content"
+          }
+        },
+        {
+          "name": "Test - Empty Arrays",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pattern\": \"STANDARD_MCQ\",\n  \"directions\": \"Test with empty arrays\",\n  \"options\": [],\n  \"CorrectAns\": []\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/questions/create",
+              "host": ["{{base_url}}"],
+              "path": ["questions", "create"]
+            },
+            "description": "This should pass as it has directions content"
+          }
+        },
+        {
+          "name": "Test - Mixed Content Types",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"directions\": \"Mixed format test\",\n  \"question\": \"Legacy question field\",\n  \"questionText\": \"New question field\",\n  \"options\": {\n    \"A\": \"Legacy option format\",\n    \"B\": \"Another legacy option\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/questions/search",
+              "host": ["{{base_url}}"],
+              "path": ["questions", "search"]
+            },
+            "description": "Testing mixed legacy and new format handling"
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000/api",
+      "type": "string"
+    },
+    {
+      "key": "auth_token",
+      "value": "",
+      "type": "string",
+      "description": "JWT token from login response"
+    },
+    {
+      "key": "question_id",
+      "value": "",
+      "type": "string",
+      "description": "ID of created question for updates"
+    }
+  ]
+}

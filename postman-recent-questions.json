@@ -1,0 +1,267 @@
+{
+  "info": {
+    "name": "Quiz Extension API - Recent Questions",
+    "description": "Updated collection with recent questions endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "access_key",
+      "value": "your-access-key-here",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "🔍 Recent Questions Endpoints",
+      "item": [
+        {
+          "name": "Get Last 25 Recent Questions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "AccessKey",
+                "value": "{{access_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/quiz/unanswered/recent?limit=25",
+              "host": ["{{base_url}}"],
+              "path": ["api", "quiz", "unanswered", "recent"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "25",
+                  "description": "Number of recent questions to retrieve (1-100)"
+                }
+              ]
+            },
+            "description": "Get the last 25 questions that were searched (most recent first)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Last 10 Recent Questions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "AccessKey",
+                "value": "{{access_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/quiz/unanswered/recent?limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "quiz", "unanswered", "recent"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Get only the last 10 questions"
+                }
+              ]
+            },
+            "description": "Get the last 10 questions that were searched"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Last 5 Recent Questions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "AccessKey",
+                "value": "{{access_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/quiz/unanswered/recent?limit=5",
+              "host": ["{{base_url}}"],
+              "path": ["api", "quiz", "unanswered", "recent"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "5",
+                  "description": "Get only the last 5 questions"
+                }
+              ]
+            },
+            "description": "Get the last 5 questions that were searched"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Top 25 Most Searched Questions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "AccessKey",
+                "value": "{{access_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/quiz/unanswered/most-searched?limit=25",
+              "host": ["{{base_url}}"],
+              "path": ["api", "quiz", "unanswered", "most-searched"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "25",
+                  "description": "Number of most searched questions to retrieve"
+                }
+              ]
+            },
+            "description": "Get the top 25 most searched questions (highest search count first)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Top 10 Most Searched Questions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "AccessKey",
+                "value": "{{access_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/quiz/unanswered/most-searched?limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "quiz", "unanswered", "most-searched"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Get top 10 most searched questions"
+                }
+              ]
+            },
+            "description": "Get the top 10 most searched questions"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "📊 Statistics Endpoints",
+      "item": [
+        {
+          "name": "Get Unanswered Questions Statistics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "AccessKey",
+                "value": "{{access_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/quiz/unanswered/stats",
+              "host": ["{{base_url}}"],
+              "path": ["api", "quiz", "unanswered", "stats"]
+            },
+            "description": "Get comprehensive statistics about unanswered questions"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Unanswered Questions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "AccessKey",
+                "value": "{{access_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/quiz/unanswered",
+              "host": ["{{base_url}}"],
+              "path": ["api", "quiz", "unanswered"]
+            },
+            "description": "Get all unanswered questions (admin endpoint)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🧪 Test Question Search",
+      "item": [
+        {
+          "name": "Search Question (to generate recent data)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "AccessKey",
+                "value": "{{access_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"directions\": \"Test directions for recent questions demo\",\n  \"question\": \"What is the capital of Germany?\",\n  \"questionImage\": \"\",\n  \"options\": {\n    \"A\": \"Berlin\",\n    \"B\": \"Munich\",\n    \"C\": \"Hamburg\",\n    \"D\": \"Frankfurt\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/quiz/get-answer",
+              "host": ["{{base_url}}"],
+              "path": ["api", "quiz", "get-answer"]
+            },
+            "description": "Search for a question to add it to recent questions list"
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
