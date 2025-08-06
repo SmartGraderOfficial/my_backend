@@ -10,7 +10,8 @@
     "setup": "node setup.js",
     "import": "node utils/importData.js",
     "test": "node test/apiTest.js",
-    "test:watch": "nodemon test/apiTest.js"
+    "test:watch": "nodemon test/apiTest.js",
+    "build": "echo 'No build step required for backend'"
   },
   "keywords": [
     "quiz",
