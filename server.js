@@ -37,6 +37,8 @@ process.on('unhandledRejection', (err) => {
 // Connect to database and start server
 const startServer = async () => {
   try {
+    console.log('🔗 Connecting to MongoDB...');
+    console.log(`🌐 Using MONGO_URI: ${process.env.MONGO_URI}`);
     await connectDb();
     
     const server = app.listen(PORT, () => {
