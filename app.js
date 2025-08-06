@@ -40,7 +40,7 @@ const corsOptions = {
       ? (process.env.ALLOWED_ORIGINS?.split(',') || [])
       : devOrigins;
 
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (!origin || allowedOrigins.includes(origin) || origin.startsWith('chrome-extension://')) {
       callback(null, true); // Allow the request
     } else {
       callback(new Error(`CORS not allowed for origin: ${origin}`));
